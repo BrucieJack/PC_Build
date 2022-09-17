@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+use App\Models\ComputerBuild;
 use Illuminate\Http\Request;
 use App\Models\CPU;
 use App\Models\GPU;
@@ -22,7 +22,22 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $builds = [];
+        $computers = ComputerBuild::where('isAdmin', '=', true)->get();
+        foreach($computers as $computer){
+            $builds[] = [
+                'id' => $computer->id,
+                'cpu' => $computer->cpu,
+                'gpu' => $computer->gpu,
+                'ram' => $computer->ram,
+                'motherboard' => $computer->motherboard,
+                'memory' => $computer->memory,
+                'power' => $computer->power,
+                'compcase' => $computer->case,
+            ];
+        }
+
+        return Inertia::render('ReadyComputers', ['builds' => $builds]);
     }
 
     /**
@@ -55,7 +70,8 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        Admin::create($request->all());
+        ComputerBuild::create($request->all());
+        return Redirect::route('admin.index');
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Redirect;
 use App\Models\ComputerBuild;
 use Illuminate\Http\Request;
 use App\Models\CPU;
@@ -23,11 +24,12 @@ class ComputerBuildController extends Controller
      */
     public function index()
     {   
-
+        $builds = [];
         $user = auth()->user()->id;
         $computers = ComputerBuild::where('user_id', '=', $user)->get();
         foreach($computers as $computer){
             $builds[] = [
+                'id' => $computer->id,
                 'cpu' => $computer->cpu,
                 'gpu' => $computer->gpu,
                 'ram' => $computer->ram,
@@ -72,6 +74,7 @@ class ComputerBuildController extends Controller
     public function store(Request $request)
     {
         ComputerBuild::create($request->all());
+        return Redirect::route('comp-build.index');
     }
 
     /**
@@ -82,20 +85,7 @@ class ComputerBuildController extends Controller
      */
     public function show(ComputerBuild $computerBuild)
     {
-        $computers = ComputerBuild::where('isAdmin', '=', true)->get();
-        foreach($computers as $computer){
-            $builds[] = [
-                'cpu' => $computer->cpu,
-                'gpu' => $computer->gpu,
-                'ram' => $computer->ram,
-                'motherboard' => $computer->motherboard,
-                'memory' => $computer->memory,
-                'power' => $computer->power,
-                'compcase' => $computer->case,
-            ];
-        }
 
-        return Inertia::render('ReadyComputers', ['builds' => $builds]);
     }
 
     /**
@@ -127,8 +117,16 @@ class ComputerBuildController extends Controller
      * @param  \App\Models\ComputerBuild  $computerBuild
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ComputerBuild $computerBuild)
+    public function destroy($id)
     {
-        //
+
+        $cb = ComputerBuild::query()->find($id);
+        $cb->delete();
+        // var_dump($computerBuild);
+        // $computerBuild->delete();
+
+        return Redirect::route('comp-build.index');
+    
+
     }
 }
