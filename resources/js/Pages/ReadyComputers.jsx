@@ -9,7 +9,7 @@ export default function ReadyComputers(props) {
             errors={props.errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Мои сборки
+                    Готовые решения
                 </h2>
             }
         >

@@ -89,8 +89,14 @@ export default function ComputerBuild(props) {
                 !(
                     props.options[0].motherboard[event.target.value - 1]
                         .form_factor ===
-                    props.options[0].computer_case[data.computer_case_id - 1]
-                        .form_factor
+                        props.options[0].computer_case[
+                            data.computer_case_id - 1
+                        ].form_factor ||
+                    (props.options[0].motherboard[event.target.value - 1]
+                        .form_factor === "MicroATX" &&
+                        props.options[0].computer_case[
+                            data.computer_case_id - 1
+                        ].form_factor === "ATX")
                 )
             ) {
                 setCASEMessage("Материнская плата не подходит к корпусу");
@@ -139,8 +145,12 @@ export default function ComputerBuild(props) {
                 !(
                     props.options[0].computer_case[event.target.value - 1]
                         .form_factor ===
-                    props.options[0].motherboard[data.motherboard_id - 1]
-                        .form_factor
+                        props.options[0].motherboard[data.motherboard_id - 1]
+                            .form_factor ||
+                    (props.options[0].computer_case[event.target.value - 1]
+                        .form_factor === "ATX" &&
+                        props.options[0].motherboard[data.motherboard_id - 1]
+                            .form_factor === "MicroATX")
                 )
             ) {
                 setCASEMessage("Материнская плата не подходит к корпусу");

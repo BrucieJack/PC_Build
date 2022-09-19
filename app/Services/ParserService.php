@@ -64,7 +64,7 @@ class ParserService
                 'price' => (float)  preg_replace("/[^,.0-9]/", '', $price),
                 'cores' => $temp[3] ?? "Нет информации",
                 'frequency' => $temp[2] ?? "Нет информации",
-                'socket' => trim($temp[1] ?? "Нет информации"),
+                'socket' => trim(str_replace('Socket', '', (str_replace('LGA', '', ($temp[1] ?? "Нет информации"))))),
             ];
         });
     }
@@ -83,7 +83,7 @@ class ParserService
                 'name' => $item->filter('.ModelList__LinkModel > span')->text(),
                 'price' => (float)  preg_replace("/[^,.0-9]/", '', $price),
                 'form_factor' => $temp[0] ?? "Нет информации",
-                'socket' => explode(' ', $temp[1] ?? "Нет информации", 3)[2],
+                'socket' => trim(str_replace('Socket', '', (str_replace('LGA', '', (explode(' ', $temp[1] ?? "Нет информации", 3)[2]))))),
                 'memory_socket' => $temp[4] ?? "Нет информации",
             ];
         });
@@ -154,7 +154,7 @@ class ParserService
             $this->case[] = [
                 'name' => $item->filter('.ModelList__LinkModel > span')->text(),
                 'price' => (float) preg_replace("/[^,.0-9]/", '', $price),
-                'form_factor' => trim(strpos($temp[0] ?? "Нет информации", "Tower") ? $temp[1] ?? "Нет информации" : $temp[0] ?? "Нет информации"),
+                'form_factor' => str_replace('-', '', (trim(strpos($temp[0] ?? "Нет информации", "Tower") ? $temp[1] ?? "Нет информации" : $temp[0] ?? "Нет информации"))),
             ];
         });
     }

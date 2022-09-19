@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Redirect;
 use App\Models\ComputerBuild;
 use Illuminate\Http\Request;
 use App\Models\CPU;
